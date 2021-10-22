@@ -1,0 +1,43 @@
+<app-upload></app-upload>
+<notifier-container></notifier-container>
+<br />
+<kendo-grid
+  [data]="studentGridDataList"
+  [height]="533"
+  [pageSize]="gridState.take"
+  [skip]="gridState.skip"
+  [sort]="gridState.sort"
+  [pageable]="true"
+  [sortable]="true"
+  (dataStateChange)="onStateChange($event)"
+  (edit)="editHandler($event)"
+  (save)="saveHandler($event)"
+  (remove)="removeHandler($event)"
+  [navigable]="true"
+>
+  <kendo-grid-column field="name" title="Student Name"></kendo-grid-column>
+  <kendo-grid-column
+    field="dob"
+    title="Date of Birth"
+    editor="date"
+  ></kendo-grid-column>
+  <kendo-grid-column field="age" title="Age"></kendo-grid-column>
+  <kendo-grid-column field="email" title="Email"></kendo-grid-column>
+  <kendo-grid-command-column title="Action" [width]="220">
+    <ng-template kendoGridCellTemplate let-isNew="isNew">
+      <button
+        kendoGridEditCommand
+        [primary]="true"
+        kendoButton
+        icon="edit"
+      ></button>
+      <button kendoGridRemoveCommand kendoButton icon="delete"></button>
+      <button
+        kendoGridSaveCommand
+        [disabled]="formGroup?.invalid"
+        kendoButton
+        icon="check"
+      ></button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>

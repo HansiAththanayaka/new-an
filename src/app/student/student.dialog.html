@@ -1,0 +1,16 @@
+<style>
+    .content {
+      max-width: 1300px;
+      background-color: rgb(223, 236, 164);
+      font-weight: 500;
+      font-size: 15px;
+    }
+  </style>
+
+<div class="content"  mat-dialog-content>
+    <p>Do you want to delete student</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+  </div>
