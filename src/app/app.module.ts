@@ -16,7 +16,6 @@ import { RemoveConfirmation, StudentComponent } from "./student/student.componen
 import { AppRoutingModule } from "./app-routing.module";
 import { APP_BASE_HREF } from "@angular/common";
 import { GraphQLModule } from "./graphql.module";
-import { UploadComponent } from "./upload/upload.component";
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { NotifierModule } from "angular-notifier";
 import { MatButtonModule } from "@angular/material/button";
@@ -25,7 +24,7 @@ import { MatIconModule } from "@angular/material/icon";
 const config: SocketIoConfig = { url: "http://localhost:3001", options: {} };
 
 @NgModule({
-  declarations: [AppComponent, StudentComponent, UploadComponent,RemoveConfirmation],
+  declarations: [AppComponent, StudentComponent,RemoveConfirmation],
   imports: [
     HttpClientModule,
     HttpClientJsonpModule,

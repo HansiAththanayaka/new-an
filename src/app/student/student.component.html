@@ -1,4 +1,9 @@
-<app-upload></app-upload>
+<label class="btn btn-default">
+  <input type="file" (change)="selectFile($event)" />
+</label>
+<button class="btn btn-danger" (click)="upload()">
+  Upload
+</button>
 <notifier-container></notifier-container>
 <br />
 <kendo-grid

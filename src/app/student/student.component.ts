@@ -16,6 +16,8 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { Color } from '@progress/kendo-drawing';
+import { NotifierService } from 'angular-notifier';
+import { UploadFilesService } from '../service/upload-files.service';
 
 const POPUPCOLUMNS: {
   field: string;
@@ -33,8 +35,18 @@ const POPUPCOLUMNS: {
   selector: 'app-student',
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css'],
+  providers: [StudentService, NotifierService]
 })
 export class StudentComponent implements OnInit {
+  private readonly notifier: NotifierService;
+  selectedFiles: FileList;
+  currentFile: File;
+  progress = 0;
+  message = '';
+  title = 'app';
+  incomingmsg = [];
+  msg = 'First Protocol';
+  fileInfos: Observable<any>;
   public studentGridDataList: StudentDetails[] = [];
   public studentGridData: StudentDetails;
 
@@ -63,11 +75,25 @@ export class StudentComponent implements OnInit {
   constructor(
     private _studentService: StudentService,
     private socketService: GatewayService,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    private uploadService: UploadFilesService,
+    notifierService: NotifierService
+  ) {
+    this.notifier = notifierService;
+  }
 
   public ngOnInit(): void {
-    this.socketService.getMessage().subscribe((msg) => {});
+    this.socketService.getMessage().subscribe(async (msg: any) => {
+      const { status } = msg;
+
+      if (status === 1) {
+        this.notifier.notify('success', 'Successfully added your file!');
+        await this.studentGridLoad();
+      } else {
+        this.notifier.notify('failed', 'File upload failed!');
+      }
+    });
+
     this.studentGridLoad();
   }
 
@@ -171,6 +197,23 @@ export class StudentComponent implements OnInit {
         }
         this.studentGridDataList = studentObj;
       });
+  }
+
+  selectFile(event): void {
+    this.selectedFiles = event.target.files;
+
+    this.currentFile = this.selectedFiles.item(0);
+  }
+
+  refresh(): void {
+    window.location.reload();
+  }
+
+  upload() {
+    const formData = new FormData();
+    formData.append('file', this.currentFile);
+    this.uploadService.uploadFile(formData);
+    this.studentGridLoad();
   }
 }
 @Component({
